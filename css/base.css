@@ -116,19 +116,6 @@ ul, ol { padding: 0; list-style: none; }
 
 .eyebrow-light { color: var(--gold-soft); }
 
-.eyebrow-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--gold);
-  animation: pulse 2.4s var(--ease-inout) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50%      { transform: scale(1.55); opacity: 0.55; }
-}
-
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex;
