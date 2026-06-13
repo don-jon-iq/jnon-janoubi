@@ -8,7 +8,7 @@
 # labels for you and terminates HTTPS via Let's Encrypt).
 #
 # Plain server (no Dokploy):  docker compose up -d --build
-# then visit http://<server-ip>:8080
+# then visit http://<server-ip>:8123
 # =====================================================
 services:
   web:
@@ -22,9 +22,10 @@ services:
     expose:
       - "80"
     # Host mapping for running outside Dokploy (remove if Dokploy
-    # complains about a port clash — Traefik doesn't need it):
+    # complains about a port clash — Traefik doesn't need it).
+    # 8123 = host port (verified free); 80 = nginx inside the container.
     ports:
-      - "8080:80"
+      - "8123:80"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 30s
