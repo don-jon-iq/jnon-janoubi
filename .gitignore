@@ -1,0 +1,14 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node (only used for local `npx serve` preview)
+node_modules/
+npm-debug.log*
+
+# Claude Code local tooling
+.code-review-graph/
+.claude/

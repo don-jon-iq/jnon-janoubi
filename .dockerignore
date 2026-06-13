@@ -1,0 +1,14 @@
+# Tooling / VCS — never ship these into the image
+.git
+.gitignore
+.claude
+.code-review-graph
+.dockerignore
+Dockerfile
+docker-compose.yml
+README.md
+*.md
+node_modules
+npm-debug.log
+.DS_Store
+Thumbs.db
