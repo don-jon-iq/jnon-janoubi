@@ -10,7 +10,7 @@
 
 var STORE_CONFIG = Object.freeze({
   // ← ← ← ضع رقمك هنا — مثال: '9647701234567'
-  WHATSAPP_NUMBER: 'PUT_YOUR_NUMBER_HERE',
+  WHATSAPP_NUMBER: '9647805371063',
 
   CURRENCY: 'د.ع',
 
