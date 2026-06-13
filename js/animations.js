@@ -70,16 +70,7 @@ var Animations = (function () {
     }).observe(sentinel);
   }
 
-  // ---- Seamless marquee (duplicate content) ----
-  function initMarquee() {
-    var track = document.getElementById('marqueeTrack');
-    if (!track) { return; }
-    var original = track.innerHTML;
-    track.innerHTML = original + original + original + original;
-  }
-
   function init() {
-    initMarquee();
     initReveals();
     initTilt();
     initHeader();
