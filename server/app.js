@@ -66,14 +66,17 @@ function buildApp() {
   app.get('/healthz', (req, res) => res.json({ ok: true }));
 
   // ---- Static assets ----
-  const weekCache = { maxAge: '7d' };
   const monthCache = { maxAge: '30d' };
+  // CSS/JS/admin: revalidate every time so code changes always propagate
+  // (they're small; large media below stays long-cached). Prevents stale code
+  // getting stuck in a CDN/browser cache across deploys.
+  const noCache = { setHeaders: (res) => res.setHeader('Cache-Control', 'no-cache') };
 
-  app.use('/css', express.static(path.join(ROOT, 'css'), weekCache));
-  app.use('/js', express.static(path.join(ROOT, 'js'), weekCache));
+  app.use('/css', express.static(path.join(ROOT, 'css'), noCache));
+  app.use('/js', express.static(path.join(ROOT, 'js'), noCache));
   app.use('/assets', express.static(path.join(ROOT, 'assets'), monthCache));
   app.use('/uploads', express.static(config.UPLOADS_DIR, monthCache));
-  app.use('/admin', express.static(path.join(ROOT, 'admin'), { extensions: ['html'] }));
+  app.use('/admin', express.static(path.join(ROOT, 'admin'), { extensions: ['html'], setHeaders: (res) => res.setHeader('Cache-Control', 'no-cache') }));
 
   // ---- Public pages (HTML never cached so edits/config go live instantly) ----
   app.get('/', (req, res) => {
