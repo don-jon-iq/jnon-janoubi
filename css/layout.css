@@ -194,6 +194,20 @@
   color: var(--gold-soft);
 }
 
+.footer-admin {
+  display: inline-block;
+  margin-block-start: var(--space-lg);
+  font-size: 0.85rem;
+  color: oklch(0.6 0.03 85);
+  border-block-end: 1px solid transparent;
+  transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.footer-admin:hover {
+  color: var(--gold-soft);
+  border-block-end-color: var(--gold-soft);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 60rem) {
   .hero-inner {

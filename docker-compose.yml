@@ -1,34 +1,39 @@
 # =====================================================
-# جنون جنوبي — Docker Compose (alternative to the
-# Dokploy "Application/Dockerfile" path).
+# جنون جنوبي — Node app (storefront + admin + API).
 #
-# In Dokploy: create a "Compose" service pointing at this
-# repo, then in the Domains tab attach your domain to
-# service "web" on port 80 (Dokploy injects the Traefik
-# labels for you and terminates HTTPS via Let's Encrypt).
+# In Dokploy: create a "Compose" (or Application/Dockerfile) service from
+# this repo, set the env secrets below, mount a persistent volume on
+# /app/data, and attach your domain to the app service on port 3000.
 #
-# Plain server (no Dokploy):  docker compose up -d --build
-# then visit http://<server-ip>:8123
+# Plain server (no Dokploy):
+#   ADMIN_PASSWORD=... SESSION_SECRET=... docker compose up -d --build
+#   then visit http://<server-ip>:8123
 # =====================================================
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
     image: jnon-janoubi:latest
     container_name: jnon-janoubi
     restart: unless-stopped
-    # Internal port Dokploy/Traefik routes to:
     expose:
-      - "80"
-    # Host mapping for running outside Dokploy (remove if Dokploy
-    # complains about a port clash — Traefik doesn't need it).
-    # 8123 = host port (verified free); 80 = nginx inside the container.
+      - "3000"                 # internal port Dokploy/Traefik routes to
     ports:
-      - "8123:80"
+      - "8123:3000"            # local-only host mapping; remove under Dokploy
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}      # set as a secret — login password
+      - SESSION_SECRET=${SESSION_SECRET}      # set as a secret — long random string
+    volumes:
+      - jnon_data:/app/data    # SQLite DB + uploaded images persist here
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 5s
+      start_period: 10s
+
+volumes:
+  jnon_data:

@@ -1,19 +1,39 @@
 # =====================================================
-# جنون جنوبي — static site served by nginx
-# Single-stage: no build step, just copy + serve.
+# جنون جنوبي — Node + Express + SQLite, serves the public
+# storefront, the /admin dashboard, uploads, and the API.
 # =====================================================
-FROM nginx:1.27-alpine
 
-# Replace the default server block with our tuned config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# ---- Stage 1: install deps (native build tools for better-sqlite3) ----
+FROM node:20-alpine AS deps
+WORKDIR /app
+RUN apk add --no-cache python3 make g++
+COPY package.json package-lock.json* ./
+RUN npm install --omit=dev
 
-# Copy the site (Dockerfile, configs, dotfiles excluded via .dockerignore)
-COPY . /usr/share/nginx/html
+# ---- Stage 2: runtime ----
+FROM node:20-alpine AS runtime
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV DATA_DIR=/app/data
+WORKDIR /app
 
-# Lightweight healthcheck so Dokploy/Docker can see the container is live
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget -qO- http://127.0.0.1/ >/dev/null 2>&1 || exit 1
+# App source + production node_modules from the deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json ./
+COPY server ./server
+COPY admin ./admin
+COPY css ./css
+COPY js ./js
+COPY assets ./assets
+COPY index.html ./index.html
 
-EXPOSE 80
+# Persistent data (DB + uploads) lives here — mount a volume on /app/data
+RUN mkdir -p /app/data/uploads && chown -R node:node /app/data
+USER node
 
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:3000/healthz >/dev/null 2>&1 || exit 1
+
+CMD ["node", "server/index.js"]

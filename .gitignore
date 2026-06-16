@@ -5,9 +5,16 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Node (only used for local `npx serve` preview)
+# Node
 node_modules/
 npm-debug.log*
+
+# Runtime data (SQLite DB + uploaded images) — never commit
+data/
+*.db
+*.db-wal
+*.db-shm
+.env
 
 # Claude Code local tooling
 .code-review-graph/

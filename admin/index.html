@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة التحكم — جنون جنوبي</title>
+  <link rel="icon" type="image/png" href="/assets/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;800;900&family=Zain:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+  <!-- ===== Login ===== -->
+  <section id="loginView" class="login" hidden>
+    <div class="login-card">
+      <img src="/assets/logo.png" alt="جنون جنوبي" class="login-logo">
+      <h1>لوحة التحكم</h1>
+      <p class="login-sub">جنون جنوبي — Southern Obsession</p>
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="pw">كلمة المرور</label>
+          <input type="password" id="pw" autocomplete="current-password" required>
+          <p class="field-error" id="loginError"></p>
+        </div>
+        <button class="btn btn-primary" type="submit" id="loginBtn">دخول</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Dashboard ===== -->
+  <section id="dashView" hidden>
+    <header class="admin-top">
+      <div class="admin-brand">
+        <img src="/assets/logo.png" alt="">
+        <span>لوحة التحكم</span>
+      </div>
+      <nav class="admin-tabs" id="tabs">
+        <button type="button" class="tab is-active" data-tab="collections">المجموعات</button>
+        <button type="button" class="tab" data-tab="settings">الإعدادات</button>
+      </nav>
+      <button type="button" class="btn btn-ghost btn-sm" id="logoutBtn">خروج</button>
+    </header>
+
+    <main class="admin-main">
+      <!-- Collections + nested items -->
+      <div class="admin-panel is-active" data-panel="collections">
+        <div class="panel-head">
+          <h2>المجموعات</h2>
+          <button type="button" class="btn btn-primary btn-sm" id="addCollection">+ مجموعة جديدة</button>
+        </div>
+        <div id="collectionsList" class="adm-list"></div>
+
+        <div id="itemsSection" hidden>
+          <div class="panel-head panel-head-sub">
+            <h2 id="itemsTitle">القطع</h2>
+            <div class="panel-head-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="addItem">+ قطعة جديدة</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="closeItems">إغلاق</button>
+            </div>
+          </div>
+          <div id="itemsList" class="adm-list"></div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="admin-panel" data-panel="settings">
+        <div class="panel-head"><h2>إعدادات المتجر</h2></div>
+        <form id="settingsForm" class="card-form" novalidate>
+          <div class="field">
+            <label for="setWhatsapp">رقم الواتساب</label>
+            <input type="text" id="setWhatsapp" inputmode="numeric" placeholder="9647801234567">
+            <p class="field-hint">بالصيغة الدولية بدون + أو مسافات.</p>
+            <p class="field-error" data-error-for="setWhatsapp"></p>
+          </div>
+          <div class="field">
+            <label for="setCurrency">رمز العملة</label>
+            <input type="text" id="setCurrency" placeholder="د.ع">
+            <p class="field-error" data-error-for="setCurrency"></p>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+        </form>
+      </div>
+    </main>
+  </section>
+
+  <!-- ===== Modal + toast ===== -->
+  <div id="modalRoot" class="modal-root" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h3 id="modalTitle"></h3>
+        <button type="button" class="modal-x" data-close aria-label="إغلاق">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="/admin/js/api.js"></script>
+  <script src="/admin/js/ui.js"></script>
+  <script src="/admin/js/auth.js"></script>
+  <script src="/admin/js/media.js"></script>
+  <script src="/admin/js/items.js"></script>
+  <script src="/admin/js/collections.js"></script>
+  <script src="/admin/js/settings.js"></script>
+  <script src="/admin/js/app.js"></script>
+</body>
+</html>

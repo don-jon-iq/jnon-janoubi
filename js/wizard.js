@@ -116,11 +116,11 @@ var Wizard = (function () {
         card.className = 'collection-card';
         card.setAttribute('aria-label', 'اختر مجموعة ' + collection.name);
         card.innerHTML =
-          '<span class="collection-tag">' + collection.tag + '</span>' +
-          '<img src="' + collection.image + '" alt="مجموعة ' + collection.name + '" loading="lazy">' +
+          (collection.tag ? '<span class="collection-tag">' + collection.tag + '</span>' : '') +
+          (collection.image ? '<img src="' + collection.image + '" alt="مجموعة ' + collection.name + '" loading="lazy">' : '') +
           '<span class="collection-card-body">' +
             '<h3>' + collection.name + '</h3>' +
-            '<p>' + collection.desc + '</p>' +
+            '<p>' + (collection.desc || '') + '</p>' +
           '</span>';
         card.addEventListener('click', function () {
           chooseCollection(collection.id);
@@ -150,11 +150,11 @@ var Wizard = (function () {
       card.className = 'product-card' + (qty > 0 ? ' is-picked' : '');
       card.innerHTML =
         '<div class="product-media">' +
-          '<img src="' + item.image + '" alt="' + item.name + '" loading="lazy">' +
+          (item.image ? '<img src="' + item.image + '" alt="' + item.name + '" loading="lazy">' : '') +
         '</div>' +
         '<div class="product-body">' +
           '<h3>' + item.name + '</h3>' +
-          '<p class="product-desc">' + item.desc + '</p>' +
+          '<p class="product-desc">' + (item.desc || '') + '</p>' +
           '<p class="product-price">' + formatPrice(item.price) + '</p>' +
           '<div class="qty" role="group" aria-label="كمية ' + item.name + '">' +
             '<button type="button" class="qty-btn" data-act="plus" aria-label="زيادة">+</button>' +
