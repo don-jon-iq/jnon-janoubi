@@ -3,7 +3,7 @@
 #
 # In Dokploy: create a "Compose" (or Application/Dockerfile) service from
 # this repo, set the env secrets below, mount a persistent volume on
-# /app/data, and attach your domain to the app service on port 3000.
+# /app/data, and attach your domain to the app service on port 8123.
 #
 # Plain server (no Dokploy):
 #   ADMIN_PASSWORD=... SESSION_SECRET=... docker compose up -d --build
@@ -18,18 +18,18 @@ services:
     container_name: jnon-janoubi
     restart: unless-stopped
     expose:
-      - "3000"                 # internal port Dokploy/Traefik routes to
+      - "8123"                 # internal port Dokploy/Traefik routes to
     ports:
-      - "8123:3000"            # local-only host mapping; remove under Dokploy
+      - "8123:8123"            # local-only host mapping; remove under Dokploy
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=8123
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}      # set as a secret — login password
       - SESSION_SECRET=${SESSION_SECRET}      # set as a secret — long random string
     volumes:
       - jnon_data:/app/data    # SQLite DB + uploaded images persist here
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/healthz"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8123/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3

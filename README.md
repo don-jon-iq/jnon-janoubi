@@ -38,13 +38,13 @@
 2. **Build Type:** `Dockerfile`.
 3. **Environment:** أضف `ADMIN_PASSWORD` و`SESSION_SECRET` و`NODE_ENV=production`.
 4. **Volumes / Mounts:** أضف حجماً دائماً (persistent volume) على المسار **`/app/data`** — هنا تُحفظ قاعدة البيانات والصور المرفوعة، وتبقى محفوظة عبر كل إعادة نشر.
-5. **Domains:** أضف نطاقك ووجّهه إلى **المنفذ `3000`**، وفعّل **HTTPS / Let's Encrypt**.
+5. **Domains:** أضف نطاقك ووجّهه إلى **المنفذ `8123`**، وفعّل **HTTPS / Let's Encrypt**.
 6. **Deploy**. فعّل **Auto Deploy** ليُعاد النشر مع كل `git push`.
 
 ### الطريقة الثانية — Docker Compose
 
 1. **Create → Compose** من مستودع GitHub (يستخدم `docker-compose.yml`).
-2. اضبط الأسرار، واربط الحجم الدائم بـ `/app/data`، واربط النطاق بالخدمة `app` على المنفذ `3000`.
+2. اضبط الأسرار، واربط الحجم الدائم بـ `/app/data`، واربط النطاق بالخدمة `app` على المنفذ `8123`.
 3. **Deploy**.
 
 ### تشغيل محلي للتجربة
@@ -57,11 +57,11 @@ ADMIN_PASSWORD=secret SESSION_SECRET=dev-secret docker compose up -d --build
 # أو مباشرة بـ Node (يتطلب أدوات بناء لـ better-sqlite3)
 npm install
 ADMIN_PASSWORD=secret SESSION_SECRET=dev-secret COOKIE_SECURE=false npm start
-# ثم افتح: http://localhost:3000
+# ثم افتح: http://localhost:8123
 ```
 
 > عند أول إقلاع تُنشأ قاعدة البيانات وتُعبّأ تلقائياً بالكتالوج الحالي (لا تفقد أي شيء).
-> داخل الحاوية يستمع Node على المنفذ **3000** (هذا ما يوجّه إليه Dokploy). المنفذ **8123** للتشغيل المحلي فقط.
+> داخل الحاوية يستمع Node على المنفذ **8123** (هذا ما يوجّه إليه Dokploy).
 
 ## نسخ احتياطي
 

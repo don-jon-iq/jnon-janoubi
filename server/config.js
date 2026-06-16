@@ -50,7 +50,7 @@ const DATA_DIR = process.env.DATA_DIR
 module.exports = Object.freeze({
   NODE_ENV,
   isProd,
-  PORT: Number(process.env.PORT) || 3000,
+  PORT: Number(process.env.PORT) || 8123,
   SESSION_SECRET,
   ADMIN_PASSWORD_HASH,
   COOKIE_SECURE: cookieSecure,
