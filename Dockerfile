@@ -17,6 +17,9 @@ ENV PORT=8123
 ENV DATA_DIR=/app/data
 WORKDIR /app
 
+# su-exec lets the entrypoint fix volume ownership as root, then drop to "node"
+RUN apk add --no-cache su-exec
+
 # App source + production node_modules from the deps stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./
@@ -26,14 +29,18 @@ COPY css ./css
 COPY js ./js
 COPY assets ./assets
 COPY index.html ./index.html
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-# Persistent data (DB + uploads) lives here — mount a volume on /app/data
-RUN mkdir -p /app/data/uploads && chown -R node:node /app/data
-USER node
+RUN mkdir -p /app/data/uploads && chown -R node:node /app/data \
+  && chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# NOTE: container starts as root so the entrypoint can chown the mounted
+# /app/data volume (often root-owned), then runs the app as "node".
 
 EXPOSE 8123
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -qO- http://127.0.0.1:8123/healthz >/dev/null 2>&1 || exit 1
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", "server/index.js"]

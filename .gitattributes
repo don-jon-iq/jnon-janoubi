@@ -1,0 +1,4 @@
+# Keep shell scripts LF so they run correctly inside Linux containers,
+# even when checked out / edited on Windows.
+*.sh text eol=lf
+docker-entrypoint.sh text eol=lf
