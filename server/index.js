@@ -1,11 +1,9 @@
 'use strict';
 
 const config = require('./config');
-const initDb = require('./db/initDb');
-const seedIfEmpty = require('./db/seed');
+const seedIfEmpty = require('./db/seed'); // requiring this opens the DB + applies the schema
 const buildApp = require('./app');
 
-initDb();
 const seeded = seedIfEmpty();
 
 const app = buildApp();
